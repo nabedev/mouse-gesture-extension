@@ -13,3 +13,6 @@ https://developer.chrome.com/extensions/overview
 
 # run_atとするとDOMの構築前に実行される？のでイベントがすぐトリガーできてよい？
 https://developer.chrome.com/extensions/content_scripts
+
+# 所感
+もっと敷居が高いと思っていたので手を動かして実際にやってみるって大事だなと思いました

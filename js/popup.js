@@ -1,17 +1,11 @@
-const commands = {
-  
-}
-
-
 const config = {
-  right: 'go',
+  right: 'forward',
   left: 'back',
-  up: '',
-  down: '',
-  rightUp: '',
-  leftUp: '',
-  rightDown: '',
-  leftDown: ''
+  up: 'createTab',
+  down: 'remobeTab',
+  rightUp: 'rightTab',
+  leftUp: 'leftTab',
+  rightDow: 'reload'
 }
 
 // popup.htmlで選択された時に実行

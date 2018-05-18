@@ -10,19 +10,19 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["./js/jquery.js", "./js/myscript.js", "./js/popup.js"],
+      "js": ["./js/jquery.js", "./js/command.js", "./js/myscript.js", "./js/popup.js"],
       "run_at": "document_start"
     }
   ],
-  // "background": {
-  //   "scripts": ["./js/jquery.js", "./js/myscript.js"],
-  //   "persistent": true
-  // },
-  // "content_security_policy": "script-src 'self' 'unsafe-eval' https://ajax.googleapis.com/ ; object-src 'self'",
+  "background": {
+    "scripts": ["./js/background.js"] ,
+    "persistent": false
+  },
   "permissions": [
     "activeTab",
     "tabs",
-    "storage"
+    "storage",
+    "history"
   ],
   "icons" : {
     "128": "icon.png"
