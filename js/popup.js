@@ -1,11 +1,12 @@
 const config = {
-  right: 'forward',
-  left: 'back',
-  up: 'createTab',
-  down: 'remobeTab',
-  rightUp: 'rightTab',
-  leftUp: 'leftTab',
-  rightDow: 'reload'
+  0: 'createTab',
+  1: 'createTab',
+  2: 'createTab',
+  3: 'createTab',
+  4: 'createTab',
+  5: 'createTab',
+  6: 'createTab',
+  7: 'createTab'
 }
 
 // popup.htmlで選択された時に実行
