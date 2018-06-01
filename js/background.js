@@ -7,16 +7,14 @@
 //   }
 // })
 
-
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   switch (request.action) {
     case 'removeTab':
       chrome.tabs.getSelected(tab => { chrome.tabs.remove(tab.id) })
-      break;
+      break
     case 'createTab':
-      console.log('createTab')
       chrome.tabs.create({})
-      break;
+      break
   }
   // if (request && request.action === 'createWindow') {
   //   chrome.tabs.getSelected(tab => {

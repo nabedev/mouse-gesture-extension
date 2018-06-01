@@ -27,7 +27,7 @@ class Vector {
   }
 
   runCommand () {
-    return command[this.config[this.direction]]()
+    // return command[this.config[this.direction]]()
   }
 
   getRadian () {
@@ -39,22 +39,20 @@ class Vector {
   }
 
   getDirection () {
-    const step = Math.PI / circle.size
+    const step = Math.PI / this.config.size
     const degree = step * 2
 
     let begin = Math.PI * 2 - step
     let end = step
 
-    console.log(this.radian)
-
     if (begin < this.radian || this.radian <= end) { return 0 }
-    if (this.radian <= end + degree*1) { return circle.size - 1 }
-    if (this.radian <= end + degree*2) { return circle.size - 2 }
-    if (this.radian <= end + degree*3) { return circle.size - 3 }
-    if (this.radian <= end + degree*4) { return circle.size - 4 }
-    if (this.radian <= end + degree*5) { return circle.size - 5 }
-    if (this.radian <= end + degree*6) { return circle.size - 6 }
-    if (this.radian <= end + degree*7) { return circle.size - 7 }
+    if (this.radian <= end + degree * 1) { return this.config.size - 1 }
+    if (this.radian <= end + degree * 2) { return this.config.size - 2 }
+    if (this.radian <= end + degree * 3) { return this.config.size - 3 }
+    if (this.radian <= end + degree * 4) { return this.config.size - 4 }
+    if (this.radian <= end + degree * 5) { return this.config.size - 5 }
+    if (this.radian <= end + degree * 6) { return this.config.size - 6 }
+    if (this.radian <= end + degree * 7) { return this.config.size - 7 }
   }
 }
 
@@ -65,20 +63,26 @@ let context = null
 const draw = (orthant) => {
   context.clearRect(0, 0, canvas.width, canvas.height)
 
-  const step = Math.PI / circle.size
+  const step = Math.PI / vector.config.size
   const degree = step * 2
 
   let begin = Math.PI * 2 - step
   let end = step
 
-  for (const i of [...Array(circle.size).keys()]) {
-    context.fillStyle = orthant === i ? circle.activeRBGA : circle.inactiveRBGA
+  for (const i of [...Array(vector.config.size).keys()]) {
+    context.fillStyle = orthant === i ? vector.config.activeRBGA : vector.config.inactiveRBGA
+    // context.moveTo(vector.beginX, vector.beginY)
     context.beginPath()
-    context.arc(circle.radius, circle.radius, circle.radius, begin, end, false)
-    context.lineTo(circle.radius, circle.radius)
+    context.arc(vector.beginX, vector.beginY, vector.config.radius, begin, end, false)
+    context.lineTo(vector.beginX, vector.beginY)
     context.closePath()
-    context.stroke()
     context.fill()
+
+    const img = new Image()
+    var x2 = vector.beginX + (vector.config.radius-12) * Math.cos(Math.PI / vector.config.size * i * 2)
+    var y2 = vector.beginY + (vector.config.radius-12) * Math.sin(Math.PI / vector.config.size * i * 2)
+    img.src = chrome.extension.getURL(`/img/${vector.config[i]}.png`)
+    context.drawImage(img, x2-12, y2-12)
 
     begin = end
     end = begin + degree
@@ -93,13 +97,13 @@ $(window).on('mousedown', function (e) {
   if (e.which !== 3) { return }
   vector.begin(e.clientX, e.clientY)
 
-  const style = `top: ${e.clientY - circle.radius}px; left:${e.clientX - circle.radius}px;`
-  $('body').append('<canvas id="stroke" width="350" height="350" style="position: fixed;' + style + '"></canvas>').fadeIn('slow')
+  // const style = `top: ${e.clientY - vector.config.radius}px; left:${e.clientX - vector.config.radius}px;`
+  const width = $(window).width()
+  const height = $(window).height()
+  $('html').prepend(`<canvas id="stroke" width="${width}" height="${height}" style="position: fixed; z-index: 9223372036854775807; padding: initial; margin: initial"></canvas>`)
 
   canvas = document.getElementById('stroke')
   context = canvas.getContext('2d')
-  context.fillStyle = 'rgba(253, 253, 253, 0.5)'
-  context.strokeStyle = 'rgba(0, 0, 0, 0.1)'
 
   draw()
 })
@@ -113,6 +117,7 @@ $(window).on('mousemove', function (e) {
 
 $(window).on('mouseup', function (e) {
   if (e.which !== 3) { return }
+  vector.isMouseDown = false
   vector.runCommand()
   $('#stroke').remove()
 })
