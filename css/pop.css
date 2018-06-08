@@ -1,5 +1,11 @@
 body {
-  width: 500px;
+  width: 400px;
   height: 1000px;
   text-align: center;
+  font-size: 14px;
+}
+.flex {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

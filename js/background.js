@@ -6,13 +6,20 @@
 //     })
 //   }
 // })
+// reload,
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   switch (request.action) {
-    case 'removeTab':
+    case 'Back':
+      chrome.tabs.executeScript(null, { code: 'window.history.back()' })
+      break
+    case 'Forward':
+      chrome.tabs.executeScript(null, { code: 'window.history.forward()' })
+      break
+    case 'RemoveTab':
       chrome.tabs.getSelected(tab => { chrome.tabs.remove(tab.id) })
       break
-    case 'createTab':
+    case 'NewTab':
       chrome.tabs.create({})
       break
   }

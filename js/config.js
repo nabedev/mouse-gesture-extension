@@ -1,11 +1,11 @@
 // console.log('command.js')
 
 const command = {
-  back: () => { window.history.back() },
-  forward: () => { window.history.forward() },
-  remobeTab: () => { chrome.runtime.sendMessage({ action: 'removeTab' }) },
-  createTab: () => { chrome.runtime.sendMessage({ action: 'createTab' }) },
-  none: () => { return null }
+  Back: () => { window.history.back() },
+  Forward: () => { window.history.forward() },
+  RemobeTab: () => { chrome.runtime.sendMessage({ action: 'removeTab' }) },
+  NewTab: () => { chrome.runtime.sendMessage({ action: 'NewTab' }) },
+  None: () => { return null }
 }
 
 // const circle = {
