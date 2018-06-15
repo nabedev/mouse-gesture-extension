@@ -38,8 +38,6 @@ class Vector {
   }
 
   getRadian () {
-    // const x = this.posX - this.beginX
-    // const y = this.beginY - this.posY
     const x = this.posX - this.beginX
     const y = this.beginY - this.posY
     return Math.atan2(y, x) < 0 ? Math.PI * 2 + Math.atan2(y, x) : Math.atan2(y, x)
@@ -78,19 +76,15 @@ const draw = (orthant) => {
   let end = step
 
   for (const i of [...Array(Number(vector.config.size)).keys()]) {
-    // context.fillStyle = orthant === i ? vector.config.activeRBGA : vector.config.inactiveRBGA
     context.moveTo(vector.beginX, vector.beginY)
     context.beginPath()
     context.arc(vector.beginX, vector.beginY, vector.config.radius, begin, end, false)
     context.lineTo(vector.beginX, vector.beginY)
-    // context.closePath()
     var x2 = vector.beginX + (vector.config.radius - vector.config.size / 6) * Math.cos(Math.PI / vector.config.size * i * 2)
     var y2 = vector.beginY + (vector.config.radius - vector.config.size / 6) * Math.sin(Math.PI / vector.config.size * i * 2)
 
     if (orthant === i) {
       context.fillStyle = vector.config.activeRBGA
-      // context.fill()
-      // context.fillStyle = vector.config.textRGBA
       context.font = vector.config.activeFont
       context.fillText(vector.config.userMap[vector.config.size][i], x2, y2)
     } else {
@@ -98,13 +92,7 @@ const draw = (orthant) => {
       context.fillStyle = vector.config.inactiveRBGA
       context.fillText(vector.config.userMap[vector.config.size][i], x2, y2)
     }
-    // context.stroke()
 
-    // const img = new Image()
-    // var x2 = vector.beginX + (vector.config.radius-12) * Math.cos(Math.PI / vector.config.size * i * 2)
-    // var y2 = vector.beginY + (vector.config.radius-12) * Math.sin(Math.PI / vector.config.size * i * 2)
-    // img.src = chrome.extension.getURL(`/img/${vector.config[i]}.png`)
-    // context.drawImage(img, x2-12, y2-12)
     begin = end
     end = begin + degree
   }
@@ -124,7 +112,6 @@ $(window).on('mousedown', function (e) {
   if (e.which !== 3) { return }
   vector.begin(e.clientX, e.clientY)
 
-  // const style = `top: ${e.clientY - vector.config.radius}px; left:${e.clientX - vector.config.radius}px;`
   const width = $(window).width()
   const height = $(window).height()
   const style = `
@@ -151,9 +138,9 @@ $(window).on('mouseup', function (e) {
   if (vector.isCanceled) { return }
   vector.isMouseDown = false
 
-  if (vector.beginX === vector.posX && vector.beginY === vector.posY) {
+  // TODO: マウス移動が無ければコンテキストメニューを表示する
+  // if (vector.beginX === vector.posX && vector.beginY === vector.posY) {}
 
-  }
   vector.runCommand()
   $('#stroke').remove()
 })
@@ -162,4 +149,10 @@ $(window).on('mousedown', function(e) {
   if (e.which !== 1) { return }
   if (!vector.isMouseDown) { return }
   vector.cancel()
+})
+
+chrome.storage.onChanged.addListener(function(changes, namespace) {
+  for (const key in changes) {
+    vector.config[key] = changes[key].newValue
+  }
 })

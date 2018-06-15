@@ -1,13 +1,3 @@
-// chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-//   if (request && request.action === 'createWindow') {
-//     chrome.tabs.getSelected(tab => {
-//       // chrome.tabs.remove(tab.id, function() { })
-//       return tab.id
-//     })
-//   }
-// })
-// reload,
-
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   switch (request.action) {
     case 'Back':
@@ -16,18 +6,34 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     case 'Forward':
       chrome.tabs.executeScript(null, { code: 'window.history.forward()' })
       break
-    case 'RemoveTab':
+    case 'CloseTab':
       chrome.tabs.getSelected(tab => { chrome.tabs.remove(tab.id) })
+      break
+    case 'RestoreTab':
+      chrome.sessions.restore()
       break
     case 'NewTab':
       chrome.tabs.create({})
       break
+    case 'RightTab':
+      chrome.tabs.query({ currentWindow: true }, tabs => {
+        const activeTab = tabs.filter(item => item.active)
+        const targetIndex = activeTab[0].index + 1 >= tabs.length
+          ? 0
+          : activeTab[0].index + 1
+
+        chrome.tabs.update(tabs[targetIndex].id, { selected: true })
+      })
+      break
+    case 'LeftTab':
+      chrome.tabs.query({ currentWindow: true }, tabs => {
+        const activeTab = tabs.filter(item => item.active)
+        const targetIndex = activeTab[0].index - 1 < 0
+          ? tabs.length - 1
+          : activeTab[0].index - 1
+
+        chrome.tabs.update(tabs[targetIndex].id, { selected: true })
+      })
+      break
   }
-  // if (request && request.action === 'createWindow') {
-  //   chrome.tabs.getSelected(tab => {
-  //     // chrome.tabs.remove(tab.id, function() { })
-  //     console.log(tab)
-  //     return tab.id
-  //   })
-  // }
 })

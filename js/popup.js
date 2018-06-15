@@ -1,4 +1,4 @@
-const gestureNames = ['Back', 'Forward', 'LeftTab', 'RightTab', 'NewTab', 'CloseTab', 'RestoreTab', 'DoNothing']
+const gestureNames = ['Back', 'Forward', 'LeftTab', 'RightTab', 'NewTab', 'CloseTab', 'RestoreTab', 'Cancel']
 
 const defaultConfig = {
   size: 8,
@@ -11,7 +11,7 @@ const defaultConfig = {
   userMap: {
     8: {
       0: 'Forward',
-      1: 'DoNothing',
+      1: 'Cancel',
       2: 'CloseTab',
       3: 'RestoreTab',
       4: 'Back',
@@ -21,7 +21,7 @@ const defaultConfig = {
     },
     7: {
       0: 'Forward',
-      1: 'DoNothing',
+      1: 'Cancel',
       2: 'CloseTab',
       3: 'RestoreTab',
       4: 'Back',
@@ -30,7 +30,7 @@ const defaultConfig = {
     },
     6: {
       0: 'Forward',
-      1: 'DoNothing',
+      1: 'Cancel',
       2: 'CloseTab',
       3: 'RestoreTab',
       4: 'Back',
@@ -38,7 +38,7 @@ const defaultConfig = {
     },
     5: {
       0: 'Forward',
-      1: 'DoNothing',
+      1: 'Cancel',
       2: 'CloseTab',
       3: 'RestoreTab',
       4: 'Back'
@@ -61,15 +61,6 @@ const defaultConfig = {
   }
 }
 let userConfig
-
-// chrome.storage.local.set({'hoge': 'piyo'}, () => {})
-
-// popup.htmlで選択された時に実行
-// chrome.storage.local.set(defaultConfig, () => {})
-
-// chrome.storage.local.get(value => {
-//   console.log(value)
-// })
 
 chrome.storage.local.get(value => {
   if (!Object.keys(value).length) {
@@ -128,7 +119,6 @@ const draw = () => {
 
     const canvas = document.getElementById(`canvas-${i}`)
     const context = canvas.getContext('2d')
-    // context.clearRect(0, 0, canvas.width, canvas.height)
     context.lineWidth = 1.5
     context.fillStyle = userConfig.activeRBGA
     const step = Math.PI / userConfig.size
@@ -138,8 +128,6 @@ const draw = () => {
     let end = step
 
     for (const j of [...Array(Number(userConfig.size)).keys()]) {
-      // context.fillStyle = x === i ? config.activeRBGA : config.inactiveRBGA
-      // context.moveTo(50, 50)
       context.beginPath()
       context.arc(60, 60, 50, begin, end, false)
       context.lineTo(60, 60)
